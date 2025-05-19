@@ -1,0 +1,136 @@
+/**
+ * FocusDot - Content CSS
+ * 
+ * Styles for the minimal floating circle timer UI.
+ */
+
+/* Container for the timer circle */
+.focusdot-timer-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2147483647; /* Highest possible z-index */
+  width: 45px; /* Reduced from 60px */
+  height: 45px; /* Reduced from 60px */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+  transition: transform 0.2s ease;
+  will-change: transform; /* Performance optimization */
+}
+
+/* Timer circle */
+.focusdot-timer-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12); /* Slightly smaller shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: move;
+  transition: all 0.15s ease-out;
+  border: 2px solid transparent; /* Reduced border width from 3px */
+  will-change: border-color, transform; /* Performance optimization */
+}
+
+/* Hover effect */
+.focusdot-timer-circle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Timer icon styles */
+.focusdot-timer-icon {
+  font-size: 18px; /* Reduced from 24px */
+  line-height: 1;
+  transition: transform 0.15s ease-out;
+}
+
+/* Timer tooltip */
+.focusdot-tooltip {
+  position: absolute;
+  bottom: 55px; /* Adjusted from 70px to account for smaller circle */
+  right: 0;
+  background-color: rgba(50, 50, 50, 0.95);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+  will-change: opacity, visibility;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 2147483646; /* Just below the container z-index */
+}
+
+.focusdot-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 25px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(50, 50, 50, 0.95) transparent transparent transparent;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+}
+
+/* Tooltip arrow styling */
+.focusdot-tooltip-arrow {
+  position: absolute;
+  top: 100%;
+  right: 25px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(50, 50, 50, 0.95);
+}
+
+/* Show tooltip on hover with enhanced visibility */
+.focusdot-timer-circle:hover + .focusdot-tooltip,
+.focusdot-timer-circle:hover .focusdot-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Color themes */
+.focusdot-pomodoro {
+  border-color: #e53935;
+}
+
+.focusdot-pomodoro.active {
+  border-color: #e53935;
+  border-width: 2px; /* Reduced from 3px */
+}
+
+.focusdot-break {
+  border-color: #43a047;
+}
+
+.focusdot-break.active {
+  border-color: #43a047;
+  border-width: 2px; /* Reduced from 3px */
+}
+
+/* Active state animation */
+@keyframes pulseActive {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.focusdot-timer-circle[data-state="running"] .focusdot-timer-icon {
+  animation: pulseActive 2s infinite ease-in-out;
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FocusDot</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="popup-container">
+      <header class="popup-header">
+        <h1>FocusDot</h1>
+        <div class="popup-timer-count">#<span id="pomodoro-count">0</span></div>
+      </header>
+
+      <div class="timer-display">
+        <div class="timer-progress-container">
+          <svg class="timer-progress-svg" viewBox="0 0 100 100">
+            <circle class="timer-progress-background" cx="50" cy="50" r="45" />
+            <circle class="timer-progress-circle" cx="50" cy="50" r="45" />
+          </svg>
+          <div class="timer-content">
+            <div class="timer-time" id="timer-time">25:00</div>
+            <div class="timer-type" id="timer-type">Pomodoro</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timer-controls">
+        <button id="timer-reset" class="timer-button" title="Reset Timer">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"
+            />
+          </svg>
+        </button>
+
+        <button
+          id="timer-start-pause"
+          class="timer-button timer-start-pause"
+          title="Start/Pause Timer"
+        >
+          <svg class="timer-play-icon" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          <svg
+            class="timer-pause-icon"
+            viewBox="0 0 24 24"
+            style="display: none"
+          >
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+          </svg>
+        </button>
+
+        <button id="timer-skip" class="timer-button" title="Skip to Next Timer">
+          <svg viewBox="0 0 24 24">
+            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="settings-section">
+        <h2>Timer Settings</h2>
+
+        <div class="settings-group">
+          <label for="pomodoro-duration">Pomodoro Duration (minutes)</label>
+          <input
+            type="number"
+            id="pomodoro-duration"
+            min="1"
+            max="60"
+            value="25"
+          />
+        </div>
+
+        <div class="settings-group">
+          <label for="short-break-duration"
+            >Short Break Duration (minutes)</label
+          >
+          <input
+            type="number"
+            id="short-break-duration"
+            min="1"
+            max="30"
+            value="5"
+          />
+        </div>
+
+        <div class="settings-group">
+          <label for="long-break-duration">Long Break Duration (minutes)</label>
+          <input
+            type="number"
+            id="long-break-duration"
+            min="1"
+            max="60"
+            value="15"
+          />
+        </div>
+
+        <div class="settings-group">
+          <label for="pomodoros-before-long-break"
+            >Pomodoros Before Long Break</label
+          >
+          <input
+            type="number"
+            id="pomodoros-before-long-break"
+            min="1"
+            max="10"
+            value="4"
+          />
+        </div>
+
+        <div class="settings-group checkbox-group">
+          <label>
+            <input type="checkbox" id="auto-start-breaks" checked />
+            Auto-start Breaks
+          </label>
+        </div>
+
+        <div class="settings-group checkbox-group">
+          <label>
+            <input type="checkbox" id="auto-start-pomodoros" checked />
+            Auto-start Pomodoros
+          </label>
+        </div>
+
+        <div class="settings-group checkbox-group">
+          <label>
+            <input type="checkbox" id="notifications" checked />
+            Show Notifications
+          </label>
+        </div>
+
+        <div class="settings-group checkbox-group">
+          <label>
+            <input type="checkbox" id="timer-visibility" checked />
+            Show Timer on Pages
+          </label>
+        </div>
+
+        <div class="settings-group">
+          <label for="dot-size">Dot Size</label>
+          <div class="slider-container">
+            <input
+              type="range"
+              id="dot-size"
+              min="30"
+              max="70"
+              step="5"
+              value="45"
+            />
+            <div class="slider-value">45px</div>
+          </div>
+        </div>
+
+        <button id="save-settings" class="save-settings-button">
+          Save Settings
+        </button>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

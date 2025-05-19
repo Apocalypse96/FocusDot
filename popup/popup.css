@@ -1,0 +1,287 @@
+/**
+ * Pomodoro Timer Extension - Popup CSS
+ * 
+ * Styles for the extension popup UI.
+ */
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --timer-color: #e53935; /* Default color - will be updated dynamically */
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 320px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+/* Popup container */
+.popup-container {
+  padding: 16px;
+}
+
+/* Popup header */
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.popup-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.popup-timer-count {
+  font-size: 14px;
+  color: #666;
+  background-color: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+/* Timer display */
+.timer-display {
+  margin-bottom: 20px;
+}
+
+.timer-progress-container {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.timer-progress-svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.timer-progress-background {
+  fill: none;
+  stroke: #f0f0f0;
+  stroke-width: 5;
+}
+
+.timer-progress-circle {
+  fill: none;
+  stroke: var(--timer-color); /* Use CSS variable instead of static color */
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke 0.3s ease, stroke-dashoffset 0.5s ease;
+}
+
+.timer-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer-time {
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.timer-type {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* Timer controls */
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.timer-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  transition: background-color 0.2s ease;
+}
+
+.timer-button:hover {
+  background-color: #e0e0e0;
+}
+
+.timer-button svg {
+  width: 24px;
+  height: 24px;
+  fill: #333;
+}
+
+.timer-start-pause {
+  background-color: #e53935;
+}
+
+.timer-start-pause:hover {
+  background-color: #d32f2f;
+}
+
+.timer-start-pause svg {
+  fill: white;
+}
+
+/* Settings section */
+.settings-section {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.settings-section h2 {
+  font-size: 16px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.settings-group {
+  margin-bottom: 12px;
+}
+
+.settings-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #555;
+}
+
+.settings-group input[type="number"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.save-settings-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.save-settings-button:hover {
+  background-color: #3367d6;
+}
+
+/* Slider styles */
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+input[type="range"] {
+  flex-grow: 1;
+  height: 5px;
+  appearance: none;
+  background: #ddd;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #4285f4;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #3367d6;
+  transform: scale(1.2);
+}
+
+.slider-value {
+  min-width: 40px;
+  font-size: 14px;
+  color: #555;
+  text-align: right;
+}
+
+/* Color themes for different timer types */
+.timer-progress-circle.pomodoro {
+  stroke: #e53935;
+}
+
+.timer-progress-circle.short-break {
+  stroke: #43a047;
+}
+
+.timer-progress-circle.long-break {
+  stroke: #1e88e5;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
