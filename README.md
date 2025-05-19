@@ -25,7 +25,7 @@ A minimal browser extension that helps you stay focused using the Pomodoro techn
 1. Clone this repository:
 
    ```
-   git clone https://github.com/yourusername/focusdot-extension.git
+   git clone https://github.com/Apocalypse96/FocusDot.git
    ```
 
 2. Open Chrome and navigate to `chrome://extensions/`
