@@ -91,4 +91,4 @@ MIT License
 
 - Inspired by the Pomodoro Technique developed by Francesco Cirillo
 - UI/UX design inspired by industry-leading extensions like Grammarly
-# poc-FocusDot
+
