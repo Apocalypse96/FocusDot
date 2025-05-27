@@ -55,6 +55,11 @@ const elements = {
   playIcon: document.querySelector(".timer-play-icon"),
   pauseIcon: document.querySelector(".timer-pause-icon"),
 
+  // Sync elements
+  syncStatus: document.getElementById("sync-status"),
+  authButton: document.getElementById("auth-button"),
+  manualSyncButton: document.getElementById("manual-sync"),
+
   // Settings inputs
   pomodoroDuration: document.getElementById("pomodoro-duration"),
   shortBreakDuration: document.getElementById("short-break-duration"),
@@ -83,11 +88,28 @@ function initialize() {
     }
   });
 
+  // Get authentication status
+  chrome.runtime.sendMessage({ action: "getAuthStatus" }, (response) => {
+    if (response) {
+      updateAuthStatus(response);
+    }
+  });
+
   // Set up event listeners
   elements.startPauseButton.addEventListener("click", toggleTimer);
   elements.resetButton.addEventListener("click", resetTimer);
   elements.skipButton.addEventListener("click", skipTimer);
   elements.saveSettingsButton.addEventListener("click", saveSettings);
+
+  // Auth button event listener
+  if (elements.authButton) {
+    elements.authButton.addEventListener("click", handleAuthButtonClick);
+  }
+
+  // Manual sync button event listener
+  if (elements.manualSyncButton) {
+    elements.manualSyncButton.addEventListener("click", handleManualSync);
+  }
 
   // Add event listener for dot size slider
   if (elements.dotSize) {
@@ -347,6 +369,102 @@ function saveSettings() {
       }
     }
   );
+}
+
+// Update authentication status
+function updateAuthStatus(authData) {
+  console.log("FocusDot Popup: Updating auth status", authData);
+
+  if (!elements.syncStatus || !elements.authButton) return;
+
+  const syncIndicator = elements.syncStatus.querySelector(".sync-indicator");
+  const syncText = elements.syncStatus.querySelector(".sync-text");
+
+  if (authData.isAuthenticated) {
+    // User is authenticated
+    syncIndicator.classList.remove("offline");
+    syncIndicator.classList.add("online");
+    syncText.textContent = `Connected as ${authData.user?.email || "User"}`;
+
+    elements.authButton.textContent = "Sign Out";
+    elements.authButton.classList.add("sign-out");
+  } else {
+    // User is not authenticated
+    syncIndicator.classList.remove("online");
+    syncIndicator.classList.add("offline");
+    syncText.textContent = "Not connected";
+
+    elements.authButton.textContent = "Sign In";
+    elements.authButton.classList.remove("sign-out");
+  }
+}
+
+// Handle auth button click
+function handleAuthButtonClick() {
+  console.log("FocusDot Popup: Auth button clicked");
+
+  // Check current auth status first
+  chrome.runtime.sendMessage({ action: "getAuthStatus" }, (response) => {
+    if (response && response.isAuthenticated) {
+      // User is authenticated, sign them out
+      chrome.runtime.sendMessage(
+        { action: "userSignedOut" },
+        (signOutResponse) => {
+          if (signOutResponse && signOutResponse.success) {
+            updateAuthStatus({ isAuthenticated: false, user: null });
+          }
+        }
+      );
+    } else {
+      // User is not authenticated, redirect to dashboard auth page
+      chrome.tabs.create({
+        url: "http://localhost:3000/auth", // Your dashboard auth URL
+        active: true,
+      });
+
+      // Also try to trigger auth check on dashboard tabs
+      chrome.tabs.query({ url: "http://localhost:3000/*" }, (tabs) => {
+        if (tabs && tabs.length > 0) {
+          tabs.forEach((tab) => {
+            chrome.tabs.sendMessage(tab.id, { action: "checkAuthState" });
+          });
+        }
+      });
+
+      // Close the popup
+      window.close();
+    }
+  });
+}
+
+// Add a manual sync button for debugging
+function handleManualSync() {
+  console.log("FocusDot Popup: Manual sync triggered");
+
+  // Try to check auth state on dashboard tabs
+  chrome.tabs.query({ url: "http://localhost:3000/*" }, (tabs) => {
+    if (tabs && tabs.length > 0) {
+      tabs.forEach((tab) => {
+        chrome.tabs.sendMessage(
+          tab.id,
+          { action: "checkAuthState" },
+          (response) => {
+            console.log("FocusDot: Manual auth check response:", response);
+          }
+        );
+      });
+    } else {
+      console.log("FocusDot: No dashboard tabs found");
+    }
+  });
+
+  // Also refresh auth status
+  chrome.runtime.sendMessage({ action: "getAuthStatus" }, (response) => {
+    console.log("FocusDot: Current auth status:", response);
+    if (response) {
+      updateAuthStatus(response);
+    }
+  });
 }
 
 // Initialize when the popup loads
